@@ -1,0 +1,17 @@
+- name: provision all transit-collector stacks
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: "launch CTA bustracker collector base stack"
+      cloudformation:
+          stack_name: "coco-cta-bustracker-collector"
+          state: "present"
+          region: "us-east-1"
+          template: "cloudformation-base-stack.yml"
+          template_parameters:
+              TransitCollectorDynamoDbTableName: "coco_cta_bustracker"
+              TransitCollectorLambdaBucketName: "coco-cta-bustracker-lambda"
+          tags:
+              Stack: "coco-cta-bustracker-collector"
+    # - name: "build lambda deploy package"
+    #   command: docker-compose run cta_bustracker_service ./build-lambda.sh

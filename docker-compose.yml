@@ -1,0 +1,8 @@
+version: "2"
+services:
+    bus_collector:
+        build: .
+        volumes:
+            - "./lambda:/src"
+            - "~/.aws:/root/.aws"
+        env_file: .env
