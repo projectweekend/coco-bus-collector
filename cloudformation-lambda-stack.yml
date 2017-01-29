@@ -1,12 +1,21 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Lambda for a basic transit tracking service
 Parameters:
-    TransitCollectorDynamoDbTableName:
+    CtaBusPredictionRoute:
         Type: String
-        Description: Enter the DynamoDB table name.
+        Description: CTA bus prediction route.
+    CtaBusApiKey:
+        Type: String
+        Description: CTA bus API key.
+    CtaBusStopId:
+        Type: String
+        Description: CTA bus stop ID.
     LambdaName:
         Type: String
         Description: Enter the Lambda name.
+    TransitCollectorDynamoDbTableName:
+        Type: String
+        Description: Enter the DynamoDB table name.
 Resources:
     TransitCollectorLambda:
         Type: "AWS::Lambda::Function"
@@ -16,9 +25,12 @@ Resources:
             Description: Lambda for a basic transit tracking service
             Environment:
                 Variables:
-                    CTA_BUS_API_KEY: pass
-                    CTA_BUS_PREDICTION_ROUTE: pass
-                    CTA_BUS_STOP_ID: pass
+                    CTA_BUS_API_KEY:
+                        Ref: CtaBusApiKey
+                    CTA_BUS_PREDICTION_ROUTE:
+                        Ref: CtaBusPredictionRoute
+                    CTA_BUS_STOP_ID:
+                        Ref: CtaBusStopId
                     DYNAMODB_TABLE:
                         Ref: TransitCollectorDynamoDbTableName
             FunctionName:
