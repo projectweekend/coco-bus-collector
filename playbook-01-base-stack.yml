@@ -1,26 +1,31 @@
+- include_vars: env.yml
 - name: provision all transit-collector stacks
   hosts: localhost
   connection: local
   tasks:
-    - name: "launch CTA bustracker collector base resources"
+    - name: "launch bustracker collector resources"
       cloudformation:
-          stack_name: "coco-cta-bustracker-collector"
+          stack_name: "coco-transit-collector"
           state: "present"
           region: "us-east-1"
           template: "cloudformation-base-stack.yml"
           template_parameters:
-              TransitCollectorDynamoDbTableName: "coco_cta_bustracker"
+              TransitCollectorDynamoDbTableName: "coco_transit_collector"
+              TransitCollectorLambdaBucketName: "coco-transit-collector"
           tags:
-              Stack: "coco-cta-bustracker-collector"
-    - name: "Prep Lambda Deploy Package"
+              Stack: "coco-transit-collector"
+    - name: "prep Lambda Deploy Package"
       command: "./prep-lambda-deploy.sh"
-    - name: "launch CTA bustracker Lambda function"
+    - name: "launch CTA bustracker collector for stop 17772"
       cloudformation:
-          stack_name: "coco-cta-bustracker-collector"
+          stack_name: "coco-cta-bustracker-17772"
+          state: "present"
           region: "us-east-1"
           template: "cloudformation-lambda-stack.yml"
           template_parameters:
-              TransitCollectorDynamoDbTableName: "coco_cta_bustracker"
-              LambdaName: "coco_cta_bustracker"
-          tags:
-              Stack: "coco-cta-bustracker-collector"
+              CtaBusPredictionRoute: "http://www.ctabustracker.com/bustime/api/v2/getpredictions"
+              CtaBusApiKey: "{{CTA_BUS_API_KEY}}"
+              CtaBusStopId: 17772
+              LambdaName: "coco_cta_bustracker_stop_17772"
+              TransitCollectorDynamoDbTableName: "coco_transit_collector"
+              TransitCollectorLambdaBucketName: "coco-transit-collector"
