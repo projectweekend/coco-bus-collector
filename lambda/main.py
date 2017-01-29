@@ -19,7 +19,7 @@ assert CTA_BUS_STOP_ID
 DYNAMODB_TABLE = os.getenv('DYNAMODB_TABLE')
 assert DYNAMODB_TABLE
 
-DYNAMOTABLE = boto3.resource('dynamodb').Table('coco_cta_bustracker')
+DYNAMOTABLE = boto3.resource('dynamodb').Table(DYNAMODB_TABLE)
 
 
 def to_timestamp(cta_time):
@@ -34,7 +34,6 @@ def cta_bus_predictions(stop_id):
         'key': CTA_BUS_API_KEY,
         'format': 'json'
     }).json()
-    print(resp)
 
     bustime_resp = resp.get('bustime-response')
     if bustime_resp is None:
