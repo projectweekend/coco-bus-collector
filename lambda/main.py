@@ -16,6 +16,9 @@ assert CTA_BUS_PREDICTION_ROUTE
 CTA_BUS_STOP_ID = os.getenv('CTA_BUS_STOP_ID')
 assert CTA_BUS_STOP_ID
 
+DYNAMODB_TABLE = os.getenv('DYNAMODB_TABLE')
+assert DYNAMODB_TABLE
+
 DYNAMOTABLE = boto3.resource('dynamodb').Table('coco_cta_bustracker')
 
 

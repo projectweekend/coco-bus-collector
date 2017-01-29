@@ -4,9 +4,6 @@ Parameters:
     TransitCollectorDynamoDbTableName:
         Type: String
         Description: Enter the DynamoDB table name.
-    TransitCollectorLambdaBucketName:
-        Type: String
-        Description: Enter the S3 bucket name.
 Resources:
     TransitCollectorDynamoDbTable:
         Type: "AWS::DynamoDB::Table"
@@ -26,8 +23,3 @@ Resources:
                 WriteCapacityUnits: 1
             TableName:
                 Ref: TransitCollectorDynamoDbTableName
-    TransirCollectorLambdaBucket:
-        Type: "AWS::S3::Bucket"
-        Properties:
-            BucketName:
-                Ref: TransitCollectorLambdaBucketName
