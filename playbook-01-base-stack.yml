@@ -1,7 +1,8 @@
-- include_vars: env.yml
 - name: provision all transit-collector stacks
   hosts: localhost
   connection: local
+  vars_files:
+      - env.yml
   tasks:
     - name: "launch bustracker collector resources"
       cloudformation:
