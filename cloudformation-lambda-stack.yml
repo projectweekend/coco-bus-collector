@@ -35,7 +35,7 @@ Resources:
                         Ref: TransitCollectorDynamoDbTableName
             FunctionName:
                 Ref: LambdaName
-            Handler: lambda_handler
+            Handler: main.lambda_handler
             Role: arn:aws:iam::421713074241:role/cta-bustracker-lambda
             Runtime: python2.7
             Timeout: 10
