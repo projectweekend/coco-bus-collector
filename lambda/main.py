@@ -36,25 +36,21 @@ def cta_bus_predictions(stop_id):
     }).json()
 
     bustime_resp = resp.get('bustime-response')
-    if bustime_resp is None:
-        raise Exception('CTA API Error: no bustime-response element')
-
-    predictions = bustime_resp.get('prd')
-    if predictions is None:
-        raise Exception('CTA API Error: no bustime-response.prd element')
-
-    for p in predictions:
-        current_time = to_timestamp(p['tmstmp'])
-        arrival_time = to_timestamp(p['prdtm'])
-        yield {
-            'stop_id': p['stpid'],
-            'route_id': p['rt'],
-            'route_direction': p['rtdir'],
-            'vehicle_id': p['vid'],
-            'current_time': current_time,
-            'arrival_time': arrival_time,
-            'time_until_arrival': arrival_time - current_time
-        }
+    if bustime_resp is not None:
+        predictions = bustime_resp.get('prd')
+        if predictions is not None:
+            for p in predictions:
+                current_time = to_timestamp(p['tmstmp'])
+                arrival_time = to_timestamp(p['prdtm'])
+                yield {
+                    'stop_id': p['stpid'],
+                    'route_id': p['rt'],
+                    'route_direction': p['rtdir'],
+                    'vehicle_id': p['vid'],
+                    'current_time': current_time,
+                    'arrival_time': arrival_time,
+                    'time_until_arrival': arrival_time - current_time
+                }
 
 
 def lambda_handler(event, context):

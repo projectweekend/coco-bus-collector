@@ -13,6 +13,9 @@ Parameters:
     LambdaName:
         Type: String
         Description: Enter the Lambda name.
+    TransitCollectorLambdaBucketName:
+        Type: String
+        Description: Enter the S3 bucket name.
     TransitCollectorDynamoDbTableName:
         Type: String
         Description: Enter the DynamoDB table name.
@@ -21,7 +24,9 @@ Resources:
         Type: "AWS::Lambda::Function"
         Properties:
             Code:
-                ZipFile: ./deploy/lambda.zip
+                S3Bucket:
+                    Ref: TransitCollectorLambdaBucketName
+                S3Key: lambda.zip
             Description: Lambda for a basic transit tracking service
             Environment:
                 Variables:
