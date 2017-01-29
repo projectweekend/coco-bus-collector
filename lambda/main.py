@@ -60,7 +60,3 @@ def cta_bus_predictions(stop_id):
 def lambda_handler(event, context):
     for p in cta_bus_predictions(stop_id=CTA_BUS_STOP_ID):
         DYNAMOTABLE.put_item(Item=p)
-
-
-if __name__ == "__main__":
-    lambda_handler(event=None, context=None)
