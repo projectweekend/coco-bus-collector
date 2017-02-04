@@ -92,3 +92,5 @@ ENV/
 deploy/
 
 terraform\.tfvars
+
+\.terraform/

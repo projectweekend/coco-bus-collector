@@ -8,6 +8,17 @@ provider "aws" {
 }
 
 
+data "terraform_remote_state" "coco_tfstate" {
+    backend = "s3"
+    config {
+        bucket = "pw-terraform-state"
+        key = "coco-bus-collector/terraform.tfstate"
+        profile = "default"
+        region = "us-east-1"
+    }
+}
+
+
 data "aws_iam_policy_document" "coco_lambda_assume_role_policy" {
     statement {
         actions = [ "sts:AssumeRole" ]
