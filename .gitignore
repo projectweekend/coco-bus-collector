@@ -94,3 +94,5 @@ deploy/
 terraform\.tfvars
 
 \.terraform/
+
+lambda\.zip

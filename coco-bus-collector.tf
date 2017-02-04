@@ -54,13 +54,13 @@ resource "aws_iam_role" "coco_bustracker_lambda_iam_role" {
 
 
 resource "aws_lambda_function" "coco_bustracker_lambda_17772" {
-    filename = "./deploy/lambda.zip"
+    filename = "lambda.zip"
     function_name = "coco_bustracker_stop_17772"
     role = "${aws_iam_role.coco_bustracker_lambda_iam_role.arn}"
     handler = "main.lambda_handler"
     runtime = "python2.7"
     timeout = 10
-    source_code_hash = "${base64sha256(file("./deploy/lambda.zip"))}"
+    source_code_hash = "${base64sha256(file("lambda.zip"))}"
     environment {
         variables = {
             CTA_BUS_API_KEY = "${var.CTA_BUS_API_KEY}"
