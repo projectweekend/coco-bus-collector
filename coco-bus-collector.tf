@@ -24,9 +24,51 @@ data "aws_iam_policy_document" "coco_lambda_assume_role_policy" {
         actions = [ "sts:AssumeRole" ]
         principals {
             type = "Service"
-            identifiers = ["lambda.amazonaws.com"]
+            identifiers = [ "lambda.amazonaws.com" ]
         }
     }
+}
+
+
+data "aws_iam_policy_document" "coco_lambda_iam_policy" {
+    statement {
+        effect = "Allow"
+        actions = [
+            "dynamodb:PutItem",
+        ]
+        resources = [
+            "${aws_dynamodb_table.coco_bustracker_dynamodb_table.arn}",
+        ]
+    }
+    statement {
+        effect = "Allow"
+        actions = [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+        ]
+        resources = [
+            "*",
+        ]
+    }
+}
+
+
+resource "aws_iam_policy" "coco_lambda_iam_policy" {
+    name = "coco_bustracker_lambda_policy"
+    policy = "${data.aws_iam_policy_document.coco_lambda_iam_policy.json}"
+}
+
+
+resource "aws_iam_role" "coco_bustracker_lambda_iam_role" {
+    name = "coco_bustracker_lambda"
+    assume_role_policy = "${data.aws_iam_policy_document.coco_lambda_assume_role_policy.json}"
+}
+
+
+resource "aws_iam_role_policy_attachment" "coco_lambda_iam_policy_attach" {
+    role = "${aws_iam_role.coco_bustracker_lambda_iam_role.name}"
+    policy_arn = "${aws_iam_policy.coco_lambda_iam_policy.arn}"
 }
 
 
@@ -44,12 +86,6 @@ resource "aws_dynamodb_table" "coco_bustracker_dynamodb_table" {
         name = "current_time"
         type = "N"
     }
-}
-
-
-resource "aws_iam_role" "coco_bustracker_lambda_iam_role" {
-    name = "coco_bustracker_lambda"
-    assume_role_policy = "${data.aws_iam_policy_document.coco_lambda_assume_role_policy.json}"
 }
 
 
