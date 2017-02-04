@@ -90,3 +90,5 @@ ENV/
 
 # Custom
 deploy/
+
+terraform\.tfvars
